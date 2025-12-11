@@ -59,16 +59,32 @@ open package.json file => add "start" : "node index.js" and "dev" : "nodemon ind
 go to terminal : npm run dev
 now you can see the hello world in terminal
 
+Express server
+----------------
+go to terminal : npm install dotenv
+create .env file => PORT=5000
+go to index.js file and write the code below
 
+import express from 'express';
 
+import dotenv from 'dotenv/config';
 
+const app = express();
 
+app.get('/api/check', (req, res) => {
+    res.status(200).json({ message: "API is running..." });
+})
 
+const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => {
+    console.log('\x1b[31m%s\x1b[0m',`Server running on port ${PORT}`);
+});
 
-
-
-
+go to terminal : npm run dev
+now you can see the Server running on port ${PORT} message in terminal
+open postman software => GET method => http://localhost:5000/api/check => send
+you can see the message in postman => { "message": "API is running..." }
 
 
 
