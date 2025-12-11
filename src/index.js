@@ -1,12 +1,11 @@
 import express from 'express';
-
-import dotenv from 'dotenv/config';
+import dotenv from 'dotenv/config'; 
+import router from './routes/router.js';
 
 const app = express();
 
-app.get('/api/check', (req, res) => {
-    res.status(200).json({ message: "API is running..." });
-})
+// router setup would go here
+app.use('/', router);
 
 const PORT = process.env.PORT || 5000;
 
