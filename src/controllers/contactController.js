@@ -1,57 +1,85 @@
-import asyncHandler from "express-async-handler";
-import { getAllUsersService , getUsersbyIdService , createUserService ,
-            updateUserService , deleteUserByIdService
- } from "../service/contactService.js";
+import * as contactService from "../service/contactService.js";
 import { responseHandler } from "../commonFunction/responsehandler.js";
 
 //@desc Get all contacts
 //@route GET /api/getContacts
 //@access public 
-const getAllContactscontroller =asyncHandler( async (req, res) => {
-    console.log("Get all contacts controller called");
-    
-    const data = await getAllUsersService();    
-    console.log('Data from service:', data);
-    
-    responseHandler(res, 200, `data fetched successfully`, data);
-})
+const getAllContactscontroller = async (req, res) => {
+
+    try {
+        const data = await contactService.getAllUsersService();
+        responseHandler(res, 200, `data fetched successfully`, data);
+    } catch (error) {
+        next(error);
+    }
+};
 
 
 //@desc Get contact by ID
 //@route GET /api/getContact/:id
 //@access public
-const getContactByIdcontroller =asyncHandler( async (req, res) => {
-    res.status(200).json({ message: `Get contact ${req.params.id}` });
-})
+const getContactByIdcontroller = async (req, res) => {
+
+    try {
+        const data = await contactService.getUsersbyIdService(req.params.id);
+        if (data.length === 0) {
+            res.status(404)
+            throw new Error(`NO data found in ${req.params.id}`);
+        }
+        responseHandler(res, 200, `data fetched successfully`, data);
+    } catch (error) {
+        next(error);
+    }
+};
 
 //@desc Create new contact
 //@route POST /api/createContact
 //@access public
-const createContactcontroller =asyncHandler( async (req, res) => {
-    console.log(`Request Body: `, req.body);
-    const {name, email, phone} =  req.body;
-
-    if(!name || !email || !phone) {
-         res.status(400)
-         throw new Error("All fields are mandatory!");
+const createContactcontroller = async (req, res) => {
+try {
+     const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+        res.status(400)
+        throw new Error("All fields are mandatory!");
     }
-    
-    res.status(200).json({ message: `New contact created` });
-})
+    const data = await contactService.createUserService(name, email, password);
+    responseHandler(res, 200, `New contact created`, data)
+} catch (error) {
+    next(error);
+}
+   
+};
 
 //@desc Update contact by ID
 //@route PUT /api/updateContact/:id
 //@access public
-const updateContactcontroller =asyncHandler( async (req, res) => {
-    res.status(200).json({ message: `Contact updated in ${req.params.id}` });
-} )
+const updateContactcontroller = async (req, res) => {
+   try {
+       const { name, email } = req.body;
+       if (!name || !email) {
+           res.status(400)
+           throw new Error("All fields are mandatory!");
+       }
+       const data = await contactService.updateUserService(req.params.id, name, email);
+       responseHandler(res, 200, `Contact updated in ${req.params.id}`, data);
+   } catch (error) {
+       next(error);
+   }
+
+};
 
 //@desc Delete contact by ID
 //@route DELETE /api/deleteContact/:id
 //@access public
-const deleteContactcontroller =asyncHandler( async (req, res) => {
-    res.status(200).json({ message: `Contact delete in ${req.params.id}` });
-} )
+const deleteContactcontroller = async (req, res) => {
+
+    try {
+        const data = await contactService.deleteUserByIdService(req.params.id);
+        responseHandler(res, 200, `Contact deleted in ${req.params.id}`, data);
+    } catch (error) {
+        next(error);
+    }
+};
 
 export {
     getAllContactscontroller as getAllContacts,
