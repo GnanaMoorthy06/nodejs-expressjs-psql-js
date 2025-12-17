@@ -141,5 +141,47 @@ create contact      :    POST                  :      /api/createContact
 update contact      :    PUT                   :      /api/updateContact/:id
 delete contact      :    DELETE                :      /api/deleteContact/:id
 
+controller / DB operation
+-----------------------
+create a folder in src named controllers
+create contactController.js file in controllers folder and write the code below
+start of contactController.js file code --------------------
+export const getContacts = (req, res) => {
+    res.status(200).json({ message: `Get all contacts` });
+}   
+export const getContact = (req, res) => {
+    res.status(200).json({ message: `Get all contact ${req.params.id}` });
+}
+export const createContact = (req, res) => {
+    res.status(200).json({ message: `New contact created` });
+}       
+export const updateContact = (req, res) => {
+    res.status(200).json({ message: `Contact updated in ${req.params.id}` });
+}   
+export const deleteContact = (req, res) => {
+    res.status(200).json({ message: `Contact delete in ${req.params.id}` });
+}   
+end of contactController.js file code --------------------
+
+DB operation
+-----------------------
+go to terminal : npm install pg dotenv
+
+create a folder in src named config 
+create config.js file in config folder and write the code below
+start of config.js file code --------------------
+import dotenv from 'dotenv/config'
+import { Client } from "pg";
+
+const client = new Client({
+    host : process.env.PG_HOST,
+    port : Number(process.env.PG_PORT),
+    user : process.env.PG_USER,
+    password : process.env.PG_PASSWORD,
+    database : process.env.PG_DATABASE
+}) 
+
+export {client as DB}
+end of config.js file code --------------------
 
 **/

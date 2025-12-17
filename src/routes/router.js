@@ -1,24 +1,12 @@
 import Express from 'express';
 const router = Express.Router();
+import { getAllContacts,
+        getContactById,
+        createContact,
+        updateContact,
+        deleteContact } from '../controllers/contactController.js';
 
-router.route('/api/getContacts').get((req, res) => {
-    res.status(200).json({ message: `Get all contacts` });
-});
-
-router.route('/api/getContact/:id').get((req, res) => {
-    res.status(200).json({ message: `Get all contact ${req.params.id}` });
-});
-
-router.route('/api/createContact').post((req, res) => {
-    res.status(200).json({ message: `New contact created` });
-});
-
-router.route('/api/updateContact/:id').put((req, res) => {
-    res.status(200).json({ message: `Contact updated in ${req.params.id}` });
-});
-
-router.route('/api/deleteContact/:id').delete((req, res) => {
-    res.status(200).json({ message: `Contact delete in ${req.params.id}` });
-});
+router.route('/').get(getAllContacts).post(createContact);
+router.route('/:id').get(getContactById).put(updateContact).delete(deleteContact);
 
 export default router;
