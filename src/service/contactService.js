@@ -1,8 +1,8 @@
 import { DB } from "../db/config.js";
 import * as models from "./contactmodel.js";
 
-export const getAllUsersService = async () => {
-        const getAllUsers = await DB.query(models.getAllUsersModel);
+export const getAllUsersService = async (created_by) => {
+        const getAllUsers = await DB.query(models.getAllUsersModel, [created_by]);
         return getAllUsers.rows
 }
 
@@ -11,8 +11,8 @@ export const getUsersbyIdService = async (id) => {
         return getUsersbyId.rows
 }
 
-export const createUserService = async (name, email, password) => {
-        const createUser = await DB.query(models.createUsersModel, [name, email, password]);
+export const createUserService = async (name, email, phone, created_by) => {
+        const createUser = await DB.query(models.createUsersModel, [name, email, phone, created_by]);
         return createUser.rows
 }
 
