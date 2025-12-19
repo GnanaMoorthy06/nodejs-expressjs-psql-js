@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv/config'; 
-import router from './routes/router.js';
+import contactRouter from './routes/contactRouter.js';
+import userRouter from './routes/userRouter.js';
 import errHandler from './middleware/errHandler.js';
 import { DB } from './db/config.js';
 
@@ -10,7 +11,8 @@ const app = express();
 app.use(express.json());
 
 // router setup would go here
-app.use('/api/contact/', router);
+app.use('/api/contact/', contactRouter);
+app.use('/api/user/', userRouter);
 
 // middleware for error handling would go here
 app.use(errHandler);
